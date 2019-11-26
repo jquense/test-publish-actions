@@ -18,7 +18,7 @@ async function run() {
     const client = new github.GitHub(token);
 
     const tags = changed.map(({ name, version }) => `${name}@${version}`);
-    core.debug(`tagging #${sha} with tag ${tags.join(', '}`);
+    core.debug(`tagging #${sha} with tag ${tags.join(', ')}`);
     console.log(tags);
     await Promise.all(
       tags.flatMap(tag => [
