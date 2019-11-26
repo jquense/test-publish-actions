@@ -1,20 +1,11 @@
 {
-  "name": "test-publish-actions",
+  "name": "@jquense/pkg1",
   "version": "1.0.0",
   "main": "index.js",
-  "private": true,
   "repository": "https://github.com/jquense/test-publish-actions.git",
   "author": "Jason Quense <monastic.panic@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "lodash": "^4.17.15"
-  },
-  "devDependencies": {
-    "lerna": "^3.19.0"
-  },
-  "workspaces": {
-    "packages": [
-      "packages/*"
-    ]
   }
 }
