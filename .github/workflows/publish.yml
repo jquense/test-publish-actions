@@ -26,7 +26,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: create-release
           branch-suffix: none
-          title: 'chore(release): create new release'
+          title: "chore(release): create new release"
           body: |
             Auto generated Release
 
@@ -40,7 +40,7 @@ jobs:
           registry-url: https://npm.pkg.github.com/
           scope: "@jquense"
       - run: yarn
-      - run: yarn lerna changed
+      - run: yarn -s lerna changed --ndjson | jq '.name + "@" + .version' | xargs -I % echo '% here'
 #       - run: yarn publish-ci
 #         env:
 #           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
