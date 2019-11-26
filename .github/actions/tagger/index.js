@@ -11,7 +11,7 @@ async function run() {
     });
     
     const changed = JSON.parse(resp.stdout || "[]");
-    console.log(changed);
+    
     const token = core.getInput("token", { required: true });
     const sha = github.context.sha;
 
@@ -19,8 +19,8 @@ async function run() {
 
     core.debug(`tagging #${sha} with tag ${tag}`);
 
-    const tags = changed.map(({ name, version }) => `${name}@${tag}`);
-
+    const tags = changed.map(({ name, version }) => `${name}@${version}`);
+    console.log(tags);
     await Promise.all(
       tags.flatMap(tag => [
         client.git.createRef({
