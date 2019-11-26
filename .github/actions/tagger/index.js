@@ -6,7 +6,7 @@ const execa = require("execa");
 async function run() {
   try {
     console.log(path.resolve(__dirname, "../../../"));
-    const resp = await execa("lerna", ["changed", "--json"], {
+    const resp = await execa("yarn", ["-s", "lerna", "changed", "--json"], {
       cwd: path.resolve(__dirname, "../../../")
     });
 
