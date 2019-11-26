@@ -6,6 +6,9 @@
   "repository": "https://github.com/jquense/test-publish-actions.git",
   "author": "Jason Quense <monastic.panic@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "publish-ci": "lerna publish from-package -y --no-verify-access"
+  },
   "dependencies": {
     "lodash": "^4.17.15"
   },
