@@ -40,7 +40,8 @@ jobs:
           registry-url: https://npm.pkg.github.com/
           scope: "@jquense"
       - run: yarn
-      - run: yarn -s lerna changed --ndjson | jq '.name + "@" + .version' | xargs -I % echo '% here'
-#       - run: yarn publish-ci
-#         env:
-#           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      # - run: yarn publish-ci
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      - run: yarn -s lerna changed --ndjson | jq '.name + "@" + .version' | xargs -I % git tag -a % -m %
+      - run: git push origin/master --tags
