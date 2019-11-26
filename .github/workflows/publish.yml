@@ -19,7 +19,7 @@ jobs:
       - name: Install Dependencies
         run: yarn
       - name: Create release
-        run: yarn lerna version --conventional-commits --include-merged-tags --no-git-tag-version
+        run: yarn lerna version --conventional-commits --include-merged-tags --no-git-tag-version --yes
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v1
         with:
