@@ -40,7 +40,7 @@ jobs:
           registry-url: https://npm.pkg.github.com/
           scope: "@jquense"
       - run: yarn
-      - run: lerna changed
+      - run: yarnlerna changed
 #       - run: yarn publish-ci
 #         env:
 #           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
