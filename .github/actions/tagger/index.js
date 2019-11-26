@@ -5,13 +5,13 @@ const execa = require("execa");
 
 async function run() {
   try {
-    console.log(path.resolve(__dirname, "../../../"));
+    
     const resp = await execa("yarn", ["-s", "lerna", "changed", "--json"], {
       cwd: path.resolve(__dirname, "../../../")
     });
-
-    const changed = JSON.parse(resp || "[]");
-
+    
+    const changed = JSON.parse(resp.stdout || "[]");
+    console.log(changed);
     const token = core.getInput("token", { required: true });
     const sha = github.context.sha;
 
