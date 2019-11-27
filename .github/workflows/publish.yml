@@ -42,6 +42,7 @@ jobs:
       - name: Install Dependencies
         run: yarn
       - uses: ./.github/actions/tagger
-
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish packages
+        run: yarn lerna publish from-package -y --no-verify-access

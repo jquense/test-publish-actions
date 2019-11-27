@@ -1,5 +1,5 @@
-const core = require("@actions/core");
 const path = require("path");
+const core = require("@actions/core");
 const github = require("@actions/github");
 const execa = require("execa");
 
