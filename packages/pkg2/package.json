@@ -1,12 +1,12 @@
 {
   "name": "@jquense/pkg2",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "main": "index.js",
   "repository": "https://github.com/jquense/test-publish-actions.git",
   "author": "Jason Quense <monastic.panic@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@jquense/pkg1": "^1.1.0",
+    "@jquense/pkg1": "^1.2.0",
     "lodash": "^4.17.15"
   }
 }
