@@ -6,7 +6,7 @@
   "author": "Jason Quense <monastic.panic@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@jquense/pkg1": "^1.1.1",
+    "@jquense/pkg1": "^1.2.0",
     "lodash": "^4.17.15"
   }
 }
