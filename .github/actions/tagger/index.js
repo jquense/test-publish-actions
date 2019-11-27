@@ -6,9 +6,10 @@ const execa = require("execa");
 async function run() {
   try {
     const resp = await execa("yarn", ["-s", "lerna", "changed", "--json"], {
-      cwd: path.resolve(__dirname, "../../../")
+      cwd: path.resolve(__dirname, "../../../"),
+      reject: false
     });
-
+    console.log(resp);
     const changed = JSON.parse(resp.stdout || "[]");
 
     const token = core.getInput("token", { required: true });
