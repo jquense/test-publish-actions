@@ -26,22 +26,23 @@ async function run() {
     core.info(`tagging #${sha} with tag ${tags.join(", ")}`);
 
     await Promise.all(
-      tags.flatMap(tag => [
-        client.git.createRef({
-          owner: github.context.repo.owner,
-          repo: github.context.repo.repo,
-          ref: `refs/tags/${tag}`,
-          sha: sha
-        }),
-        client.git.createTag({
+      tags.map(async tag => {
+        const tagObj = await client.git.createTag({
           tag,
           message: tag,
           type: "commit",
           object: sha,
           owner: github.context.repo.owner,
           repo: github.context.repo.repo
-        })
-      ])
+        });
+        console.log(tagObj);
+        return client.git.createRef({
+          owner: github.context.repo.owner,
+          repo: github.context.repo.repo,
+          ref: `refs/tags/${tag}`,
+          sha: tagObj.data.sha
+        });
+      })
     );
   } catch (error) {
     core.error(error);
