@@ -2,8 +2,6 @@ name: Publish Packages
 on:
   pull_request:
     types: [closed]
-    branches:
-      - create-release
 jobs:
   publish:
     runs-on: ubuntu-latest
