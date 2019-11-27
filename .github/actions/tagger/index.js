@@ -5,16 +5,21 @@ const execa = require("execa");
 
 async function run() {
   try {
+    const eventPayload = require(process.env.GITHUB_EVENT_PATH);
+
     const resp = await execa("yarn", ["-s", "lerna", "changed", "--json"], {
       cwd: path.resolve(__dirname, "../../../"),
       reject: false
     });
 
+    console.log(eventPayload);
+
     if (resp.stderr) {
       core.info(resp.stderr);
       return;
     }
-
+    core.setFailed("testing");
+    return;
     const changed = JSON.parse(resp.stdout || "[]");
 
     const token = core.getInput("token", { required: true });

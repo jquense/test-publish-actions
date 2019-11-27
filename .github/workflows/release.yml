@@ -1,0 +1,31 @@
+name: Publish Packages
+on:
+  push:
+    branches:
+      - master
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v1
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - name: Checkout master
+        run: git checkout master
+      - name: Install Dependencies
+        run: yarn
+      - name: Create release
+        run: yarn lerna version --conventional-commits --include-merged-tags --no-git-tag-version --yes
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: create-release
+          branch-suffix: none
+          title: "chore(release): create new release"
+          body: |
+            Auto generated Release
