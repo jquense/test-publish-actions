@@ -9,7 +9,12 @@ async function run() {
       cwd: path.resolve(__dirname, "../../../"),
       reject: false
     });
-    console.log(resp);
+
+    if (resp.stderr) {
+      core.info(resp.stderr);
+      return;
+    }
+
     const changed = JSON.parse(resp.stdout || "[]");
 
     const token = core.getInput("token", { required: true });
