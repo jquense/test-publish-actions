@@ -1,9 +1,0 @@
-name: "Commit tagger"
-description: "tags the commit with pending version changes"
-author: "Jason Quense"
-inputs:
-  token:
-    description: "The GITHUB_TOKEN secret"
-runs:
-  using: "node12"
-  main: "index.js"
