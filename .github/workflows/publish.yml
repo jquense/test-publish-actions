@@ -1,21 +1,78 @@
 name: Publish Packages
+
 on:
+  # When Release Pull Request is merged
   pull_request:
+    branches:
+      - master
     types: [closed]
+
+env:
+  CI: true
+
 jobs:
-  publish:
+  release:
+    name: Release
     runs-on: ubuntu-latest
+
+    # Only run when the PR was merged (and not closed for example)
+    if: github.event.pull_request.merged && !contains(github.event.pull_request.title, 'chore(release)')
+
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
         with:
           node-version: 12
-          registry-url: https://npm.pkg.github.com/
-          scope: "@jquense"
+      - name: Set Git Identity
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Install Dependencies
         run: yarn
-      - uses: ./.github/actions/tagger
+      - name: Create release
+        run: yarn lerna publish --conventional-commits --yes --no-push
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-      # - name: Publish packages
-      #   run: yarn lerna publish from-package -y --no-verify-access
+          branch: chore/release
+          title: "chore(release): create new release [skip ci]"
+          body: |
+            Auto generated Release
+
+
+  version:
+    name: Version
+    runs-on: ubuntu-latest
+
+    # Only run when the PR was merged (and not closed for example)
+    if: github.event.pull_request.merged && contains(github.event.pull_request.title, 'chore(release)')
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - name: Set Git Identity
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install Dependencies
+        run: yarn
+      - name: Version
+        uses: ./.github/actions/tagger
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
