@@ -5,21 +5,16 @@ const execa = require("execa");
 
 async function run() {
   try {
-    const eventPayload = require(process.env.GITHUB_EVENT_PATH);
-
     const resp = await execa("yarn", ["-s", "lerna", "changed", "--json"], {
       cwd: path.resolve(__dirname, "../../../"),
-      reject: false
+      reject: false,
     });
 
-    console.log(eventPayload);
-
-    if (resp.stderr) {
-      core.info(resp.stderr);
+    if (resp.failed) {
+      core.setFailed(resp.stderr);
       return;
     }
-    core.setFailed("testing");
-    return;
+
     const changed = JSON.parse(resp.stdout || "[]");
 
     const token = core.getInput("token", { required: true });
@@ -37,21 +32,20 @@ async function run() {
     core.info(`tagging #${sha} with tag ${tags.join(", ")}`);
 
     await Promise.all(
-      tags.map(async tag => {
+      tags.map(async (tag) => {
         const tagObj = await client.git.createTag({
           tag,
           message: tag,
           type: "commit",
           object: sha,
           owner: github.context.repo.owner,
-          repo: github.context.repo.repo
+          repo: github.context.repo.repo,
         });
-        console.log(tagObj);
         return client.git.createRef({
           owner: github.context.repo.owner,
           repo: github.context.repo.repo,
           ref: `refs/tags/${tag}`,
-          sha: tagObj.data.sha
+          sha: tagObj.data.sha,
         });
       })
     );
